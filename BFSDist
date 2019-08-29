@@ -1,0 +1,78 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    public static void bfs(ArrayList<ArrayList<Integer>> adList, int s, boolean visited[], int dist[]){
+        Queue<Integer> q = new LinkedList<Integer>();
+        visited[s]=true;
+        q.add(s);
+        //int t=6;
+        while(q.size()>0){
+            int temp = q.poll();
+            
+            
+            ArrayList<Integer> neighbours = new ArrayList<Integer>();
+            neighbours = adList.get(temp);
+            
+            for(int i=0;i<neighbours.size();i++){
+                if(visited[neighbours.get(i)]==false){
+                q.add(neighbours.get(i));
+                visited[neighbours.get(i)]=true;
+                dist[neighbours.get(i)]+=dist[temp]+6;
+                }
+            }
+            //t = t +6;
+        }
+        
+        return;
+
+    }
+    private static final Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        int q = sc.nextInt();
+        while(q>0){
+            int n = sc.nextInt();
+            int m = sc.nextInt();
+            ArrayList<ArrayList<Integer>> adList = new ArrayList<>();
+            for(int i=0;i<=n;i++){
+                adList.add(new ArrayList<Integer>());
+            }
+            for(int i=1;i<=m;i++){
+                int u = sc.nextInt();
+                int v = sc.nextInt();
+                adList.get(u).add(v);
+                adList.get(v).add(u);
+            }
+            int s = sc.nextInt();
+            boolean visited[] = new boolean[n+1];
+            int dist[] = new int[n+1];
+            for(int i=0;i<=n;i++){
+                visited[i]=false;
+                dist[i]=0;
+            }
+            
+            bfs(adList,s, visited, dist);
+            for(int i=1;i<=n;i++){
+                
+                int x = dist[i];
+                    if(i!=s){
+                        if(x==0){
+                            System.out.print("-1" + " ");
+                        }
+                        else
+                        System.out.print(x+" ");
+                    }
+                
+            }
+            System.out.println();
+            q--;
+        }
+    }
+}
